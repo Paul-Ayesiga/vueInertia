@@ -1,0 +1,393 @@
+@import 'tailwindcss';
+
+@import "tw-animate-css";
+@import "@fontsource/jetbrains-mono/index.css";
+
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --animate-accordion-down:
+    accordion-down 0.2s ease-out;
+  --animate-accordion-up:
+    accordion-up 0.2s ease-out;
+
+  /* Add navy and sand to the theme */
+  --color-navy: var(--navy);
+  --color-sand-extra-light: var(--sand-extra-light);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  body,
+  html {
+   
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+:root {
+  --radius: 1rem;
+
+  /* Base colors */
+  --background: rgb(246, 244, 239);    /* Sand color for background */
+  --foreground: oklch(0.141 0.005 285.823);
+
+  /* Card with gradient */
+  --card: oklch(1 0 0);
+  --card-gradient-from: oklch(1 0 0);
+  --card-gradient-to: oklch(0.98 0.01 240);
+  --card-foreground: oklch(0.141 0.005 285.823);
+
+  /* Popover with gradient */
+  --popover: oklch(1 0 0);
+  --popover-gradient-from: oklch(1 0 0);
+  --popover-gradient-to: oklch(0.98 0.01 240);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+
+  /* Primary with gradient */
+  --primary: oklch(0.623 0.214 259.815);
+  --primary-gradient-from: oklch(0.623 0.214 259.815);
+  --primary-gradient-to: oklch(0.58 0.24 250);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+
+  /* Secondary with gradient */
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-gradient-from: oklch(0.967 0.001 286.375);
+  --secondary-gradient-to: oklch(0.94 0.02 280);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+
+  /* Accent with gradient */
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-gradient-from: oklch(0.967 0.001 286.375);
+  --accent-gradient-to: oklch(0.94 0.02 280);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+
+  /* Sidebar with gradient */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-gradient-from: oklch(0.985 0 0);
+  --sidebar-gradient-to: oklch(0.96 0.01 240);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-primary-gradient-from: oklch(0.623 0.214 259.815);
+  --sidebar-primary-gradient-to: oklch(0.58 0.24 250);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+
+  /* Other colors */
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.623 0.214 259.815);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.623 0.214 259.815);
+
+  /* Text colors remain solid */
+  --text-primary: oklch(0.3 0.1 240);
+  --text-secondary: oklch(0.4 0.08 240);
+  --text-body: oklch(0.45 0.06 240);
+  --text-muted: oklch(0.55 0.04 240);
+
+  --navy: oklch(0.3 0.1 240);
+  --sand-extra-light: rgb(246, 244, 239);
+}
+
+.dark {
+  /* Base colors */
+  --background: oklch(0.13 0.02 240);
+  --bg-gradient-from: oklch(0.13 0.02 240);
+  --bg-gradient-to: oklch(0.10 0.03 220);
+  --foreground: oklch(0.98 0.005 0);
+
+  /* Card with gradient */
+  --card: oklch(0.15 0.02 240);
+  --card-gradient-from: oklch(0.15 0.02 240);
+  --card-gradient-to: oklch(0.12 0.03 220);
+  --card-foreground: oklch(0.98 0.005 0);
+
+  /* Popover with gradient */
+  --popover: oklch(0.15 0.02 240);
+  --popover-gradient-from: oklch(0.15 0.02 240);
+  --popover-gradient-to: oklch(0.12 0.03 220);
+  --popover-foreground: oklch(0.98 0.005 0);
+
+  /* Primary with gradient */
+  --primary: oklch(0.546 0.245 262.881);
+  --primary-gradient-from: oklch(0.546 0.245 262.881);
+  --primary-gradient-to: oklch(0.5 0.27 255);
+  --primary-foreground: oklch(0.98 0.005 0);
+
+  /* Secondary with gradient */
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-gradient-from: oklch(0.274 0.006 286.033);
+  --secondary-gradient-to: oklch(0.24 0.02 280);
+  --secondary-foreground: oklch(0.98 0.005 0);
+
+  /* Accent with gradient */
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-gradient-from: oklch(0.274 0.006 286.033);
+  --accent-gradient-to: oklch(0.24 0.02 280);
+  --accent-foreground: oklch(0.98 0.005 0);
+
+  /* Sidebar with gradient */
+  --sidebar: oklch(0.10 0.02 240);
+  --sidebar-gradient-from: oklch(0.10 0.02 240);
+  --sidebar-gradient-to: oklch(0.08 0.03 220);
+  --sidebar-foreground: oklch(0.98 0.005 0);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-gradient-from: oklch(0.546 0.245 262.881);
+  --sidebar-primary-gradient-to: oklch(0.5 0.27 255);
+  --sidebar-primary-foreground: oklch(0.98 0.005 0);
+
+  /* Other colors */
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.85 0.01 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.98 0.005 0);
+  --border: oklch(0.2 0.02 240);
+  --input: oklch(0.2 0.02 240);
+  --ring: oklch(0.488 0.243 264.376);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.98 0.005 0);
+  --sidebar-border: oklch(0.2 0.02 240);
+  --sidebar-ring: oklch(0.488 0.243 264.376);
+
+  /* Text colors remain solid */
+  --text-primary: oklch(0.98 0.005 0);
+  --text-secondary: oklch(0.9 0.01 0);
+  --text-body: oklch(0.85 0.01 0);
+  --text-muted: oklch(0.7 0.01 0);
+
+  --navy: oklch(0.98 0.005 0);
+  --sand-extra-light: oklch(0.13 0.02 240);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/*
+  ---break---
+*/
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Add this to ensure sidebar background is applied correctly on mobile */
+@layer utilities {
+  [data-slot="sidebar"],
+  [data-sidebar="sidebar"] {
+    background-color: var(--sidebar-background);
+  }
+
+  /* Ensure sheet content (mobile sidebar) has proper background */
+  .bg-sidebar {
+    background-color: var(--sidebar-background) !important;
+  }
+}
+
+/* Add this to ensure active sidebar items use the primary color */
+@layer utilities {
+  [data-sidebar="menu-button"][data-active="true"],
+  [data-sidebar="menu-sub-button"][data-active="true"] {
+    background-color: var(--sidebar-primary) !important;
+    color: var(--sidebar-primary-foreground) !important;
+  }
+
+  [data-sidebar="menu-button"][data-active="true"] svg,
+  [data-sidebar="menu-sub-button"][data-active="true"] svg {
+    color: var(--sidebar-primary-foreground) !important;
+  }
+}
+
+/* Apply text colors to maintain hierarchy */
+@layer base {
+  body {
+    @apply text-[var(--text-body)];
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-[var(--text-primary)];
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+}
+
+/* Add utility classes */
+@layer utilities {
+  .font-mono {
+      font-family: var(--font-mono), "JetBrains Mono", ui-monospace;
+  }
+
+  /* Existing utility classes */
+  .text-navy {
+    color: var(--color-navy);
+  }
+
+  .bg-sand-extra-light {
+    background-color: var(--color-sand-extra-light);
+  }
+}
+
+/* Apply to body */
+@layer base {
+  body {
+    @apply flex flex-col min-h-screen bg-background text-foreground font-sans antialiased leading-tight;
+  }
+}
+
+/* Add gradient utility classes for both light and dark modes */
+@layer utilities {
+  /* Light mode gradients */
+  .bg-gradient-primary {
+    background-image: linear-gradient(to bottom right, var(--primary-gradient-from), var(--primary-gradient-to));
+  }
+
+  .bg-gradient-secondary {
+    background-image: linear-gradient(to bottom right, var(--secondary-gradient-from), var(--secondary-gradient-to));
+  }
+
+  .bg-gradient-accent {
+    background-image: linear-gradient(to bottom right, var(--accent-gradient-from), var(--accent-gradient-to));
+  }
+
+  .bg-card-gradient {
+    background-image: linear-gradient(to bottom right, var(--card-gradient-from), var(--card-gradient-to));
+  }
+
+  .bg-sidebar-gradient {
+    background-image: linear-gradient(to bottom, var(--sidebar-gradient-from), var(--sidebar-gradient-to));
+  }
+
+  .bg-sidebar-primary-gradient {
+    background-image: linear-gradient(to bottom right, var(--sidebar-primary-gradient-from), var(--sidebar-primary-gradient-to));
+  }
+
+  /* Dark mode specific */
+  .dark .bg-gradient-dark {
+    background-image: linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to));
+  }
+
+  /* Apply gradients to specific elements */
+  .dark body {
+    background-image: linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to));
+  }
+
+  [data-slot="sidebar"],
+  [data-sidebar="sidebar"] {
+    background-image: linear-gradient(to bottom, var(--sidebar-gradient-from), var(--sidebar-gradient-to));
+  }
+
+  [data-sidebar="menu-button"][data-active="true"],
+  [data-sidebar="menu-sub-button"][data-active="true"] {
+    background-image: linear-gradient(to bottom right, var(--sidebar-primary-gradient-from), var(--sidebar-primary-gradient-to)) !important;
+  }
+
+  .bg-primary {
+    background-image: linear-gradient(to bottom right, var(--primary-gradient-from), var(--primary-gradient-to));
+  }
+
+  .bg-secondary {
+    background-image: linear-gradient(to bottom right, var(--secondary-gradient-from), var(--secondary-gradient-to));
+  }
+
+  .bg-accent {
+    background-image: linear-gradient(to bottom right, var(--accent-gradient-from), var(--accent-gradient-to));
+  }
+}
+
