@@ -89,7 +89,7 @@
 @layer utilities {
   body,
   html {
-   
+
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 }
@@ -245,7 +245,7 @@
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply bg-sidebar text-foreground;
     }
 }
 
@@ -258,7 +258,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-sidebar text-foreground;
   }
 }
 
@@ -388,6 +388,30 @@
 
   .bg-accent {
     background-image: linear-gradient(to bottom right, var(--accent-gradient-from), var(--accent-gradient-to));
+  }
+}
+
+/* Add browser scrollbar styling */
+@layer utilities {
+  /* Webkit browsers (Chrome, Safari, newer Edge) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 9999px;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
   }
 }
 

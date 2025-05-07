@@ -38,7 +38,7 @@ onMounted(() => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <Card>
+                <Card hoverable>
                     <CardHeader>
                         <CardTitle class="flex items-center gap-2">
                             <LucideUsers class="h-5 w-5 font-mono" />
@@ -52,7 +52,7 @@ onMounted(() => {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card hoverable>
                     <CardHeader>
                         <CardTitle class="flex items-center gap-2">
                             <LucideBarChart class="h-5 w-5" />
@@ -66,7 +66,7 @@ onMounted(() => {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card hoverable>
                     <CardHeader>
                         <CardTitle class="flex items-center gap-2">
                             <LucideActivity class="h-5 w-5" />
@@ -81,7 +81,7 @@ onMounted(() => {
                 </Card>
             </div>
 
-            <Card class="flex-1">
+            <Card hoverable class="flex-1">
                 <CardHeader>
                     <CardTitle>Performance Overview</CardTitle>
                     <CardDescription>System metrics for the past 30 days</CardDescription>
