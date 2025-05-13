@@ -10,7 +10,7 @@ const { state } = useSidebar();
         <AppLogoIcon
             :class="[
                 'transition-all duration-200',
-                state === 'collapsed' ? 'size-9' : 'size-8'
+                state === 'collapsed' ? 'size-9' : 'size-13'
             ]"
         />
     </div>
@@ -18,6 +18,6 @@ const { state } = useSidebar();
         class="ml-1 grid flex-1 text-left text-sm"
         :class="{ 'opacity-0': state === 'collapsed' }"
     >
-        <span class="mb-0.5 truncate font-semibold leading-none">PR Enterprises</span>
+    <!-- <span class="mb-0.5 truncate font-semibold leading-none">SoundStage</span> -->
     </div>
 </template>

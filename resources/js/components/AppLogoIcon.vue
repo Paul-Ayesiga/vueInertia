@@ -13,10 +13,13 @@ defineProps<Props>();
 </script>
 
 <template>
-    <img
-        src="/logo.png"
-        alt="Logo"
-        :class="className"
-        v-bind="$attrs"
-    />
+    <div class="flex">
+        <img
+            src="/logo.png"
+            alt="Logo"
+            :class="className"
+            v-bind="$attrs"
+        />
+        <span class="mt-4 truncate font-semibold leading-none">SoundStage</span>
+    </div>
 </template>

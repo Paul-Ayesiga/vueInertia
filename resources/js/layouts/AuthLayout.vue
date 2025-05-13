@@ -1,14 +1,23 @@
 <script setup lang="ts">
-import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue';
+import AuthSplitLayout from '@/layouts/auth/AuthSimpleLayout.vue';
+import AuthCenteredLayout from '@/layouts/auth/AuthCenteredLayout.vue';
 
-defineProps<{
+interface Props {
     title?: string;
     description?: string;
-}>();
+    variant?: 'split' | 'centered';
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    variant: 'split'
+});
 </script>
 
 <template>
-    <AuthLayout :title="title" :description="description">
+    <AuthSplitLayout v-if="variant === 'split'" :title="title" :description="description">
         <slot />
-    </AuthLayout>
+    </AuthSplitLayout>
+    <AuthCenteredLayout v-else :title="title" :description="description">
+        <slot />
+    </AuthCenteredLayout>
 </template>

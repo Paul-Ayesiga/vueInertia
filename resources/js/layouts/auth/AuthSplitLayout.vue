@@ -18,7 +18,6 @@ defineProps<{
             <div class="absolute inset-0 bg-zinc-900" />
             <Link :href="route('home')" class="relative z-20 flex items-center text-lg font-medium">
                 <AppLogoIcon class="mr-2 size-8 fill-current text-white" />
-                {{ name }}
             </Link>
             <div v-if="quote" class="relative z-20 mt-auto">
                 <blockquote class="space-y-2">
@@ -28,8 +27,14 @@ defineProps<{
             </div>
         </div>
         <div class="lg:p-8">
+
             <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                 <div class="flex flex-col space-y-2 text-center">
+                    <Link :href="route('home')" class="flex items-center gap-2 self-center font-medium">
+                        <div class="flex h-9 w-16 items-center justify-center">
+                            <AppLogoIcon class="size-14 mb-15 fill-current text-black dark:text-white" />
+                        </div>
+                    </Link>
                     <h1 class="text-xl font-medium tracking-tight" v-if="title">{{ title }}</h1>
                     <p class="text-sm text-muted-foreground" v-if="description">{{ description }}</p>
                 </div>
