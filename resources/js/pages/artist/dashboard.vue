@@ -7,11 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import {
-    LucideMusic2,
     LucideUsers,
     LucideHeart,
     LucideCalendar,
-    LucidePlayCircle,
     LucideShare2,
     LucideMessageCircle,
     LucideBarChart,
@@ -50,7 +48,6 @@ const props = defineProps<{
             platform: string;
             url: string;
         }>;
-        totalTracks: number;
         totalFollowers: number;
         totalLikes: number;
     };
@@ -72,13 +69,6 @@ const props = defineProps<{
         venue: string;
         ticketsSold: number;
         totalCapacity: number;
-    }>;
-    topTracks: Array<{
-        id: number;
-        title: string;
-        streams: number;
-        duration: string;
-        thumbnail: string;
     }>;
 }>();
 
@@ -182,7 +172,7 @@ onMounted(() => {
                                             rel="noopener noreferrer"
                                             class="flex items-center gap-2 text-sm hover:text-primary transition-colors"
                                         >
-                                            <LucideMusic2 class="h-4 w-4 shrink-0" />
+                                            <LucideShare2 class="h-4 w-4 shrink-0" />
                                             <span class="truncate">{{ link.platform }}</span>
                                         </a>
                                     </div>
@@ -194,20 +184,7 @@ onMounted(() => {
 
                 <!-- Quick Stats -->
                 <div class="flex-1">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 h-full">
-                        <Card hoverable class="lg:flex-1">
-                            <CardHeader>
-                                <CardTitle class="flex items-center gap-2 text-base">
-                                    <LucideMusic2 class="h-4 w-4" />
-                                    Tracks
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <Skeleton v-if="isLoading" class="h-8 w-16" />
-                                <div v-else class="text-2xl font-bold">{{ artist.totalTracks }}</div>
-                            </CardContent>
-                        </Card>
-
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 h-full">
                         <Card hoverable class="lg:flex-1">
                             <CardHeader>
                                 <CardTitle class="flex items-center gap-2 text-base">
@@ -318,46 +295,7 @@ onMounted(() => {
             </div>
 
             <!-- Bottom Section -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Top Tracks -->
-                <Card hoverable>
-                    <CardHeader>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <CardTitle>Top Tracks</CardTitle>
-                                <CardDescription>Your most popular music</CardDescription>
-                            </div>
-                            <Button variant="ghost" size="sm" class="gap-2">
-                                View All
-                                <LucideArrowRight class="h-4 w-4" />
-                            </Button>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div class="space-y-4">
-                            <div v-if="isLoading" v-for="i in 3" :key="i" class="flex items-center gap-4">
-                                <Skeleton class="h-12 w-12 rounded" />
-                                <div class="flex-1">
-                                    <Skeleton class="h-4 w-3/4 mb-2" />
-                                    <Skeleton class="h-3 w-1/4" />
-                                </div>
-                                <Skeleton class="h-8 w-16" />
-                            </div>
-                            <div v-else v-for="track in topTracks" :key="track.id" class="flex items-center gap-4">
-                                <img :src="track.thumbnail" :alt="track.title" class="h-12 w-12 rounded object-cover" />
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-medium truncate">{{ track.title }}</h4>
-                                    <p class="text-sm text-muted-foreground">{{ track.duration }}</p>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <LucidePlayCircle class="h-4 w-4 text-muted-foreground" />
-                                    <span class="text-sm">{{ track.streams.toLocaleString() }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
+            <div class="grid grid-cols-1 gap-4">
                 <!-- Upcoming Events -->
                 <Card hoverable>
                     <CardHeader>

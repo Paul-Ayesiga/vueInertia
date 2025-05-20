@@ -79,14 +79,14 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Create Roles and Assign Permissions
 
         // 1. User Role (Basic authenticated user)
-        $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo([
+        $userRole = Role::firstOrCreate(['name' => 'user']);
+        $userRole->syncPermissions([
             'edit_profile',
             'view_profile',
             'view_events',
@@ -98,8 +98,8 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // 2. Artist Role
-        $artistRole = Role::create(['name' => 'artist']);
-        $artistRole->givePermissionTo([
+        $artistRole = Role::firstOrCreate(['name' => 'artist']);
+        $artistRole->syncPermissions([
             'edit_profile',
             'view_profile',
             'create_artist_profile',
@@ -115,8 +115,8 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // 3. Event Organizer Role
-        $eventOrganizerRole = Role::create(['name' => 'event_organizer']);
-        $eventOrganizerRole->givePermissionTo([
+        $eventOrganizerRole = Role::firstOrCreate(['name' => 'event_organizer']);
+        $eventOrganizerRole->syncPermissions([
             'edit_profile',
             'view_profile',
             'create_events',
@@ -136,8 +136,8 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // 4. Venue Manager Role
-        $venueManagerRole = Role::create(['name' => 'venue_manager']);
-        $venueManagerRole->givePermissionTo([
+        $venueManagerRole = Role::firstOrCreate(['name' => 'venue_manager']);
+        $venueManagerRole->syncPermissions([
             'edit_profile',
             'view_profile',
             'create_venues',
@@ -153,8 +153,8 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // 5. Admin Role
-        $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo([
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $adminRole->syncPermissions([
             'view_users',
             'create_users',
             'edit_users',
@@ -185,8 +185,8 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // 6. Super Admin Role
-        $superAdminRole = Role::create(['name' => 'super_admin']);
+        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
         // Super Admin gets all permissions via Gate::before rule
-        $superAdminRole->givePermissionTo(Permission::all());
+        $superAdminRole->syncPermissions(Permission::all());
     }
 }

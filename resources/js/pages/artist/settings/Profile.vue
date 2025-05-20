@@ -61,6 +61,7 @@ const form = useForm({
     socialMediaLinks: parseJsonOrDefault(artist?.social_media_links, []),
     musicLinks: parseJsonOrDefault(artist?.music_links, []),
     profilePhoto: null as File | null,
+    coverPhoto: null as File | null,
 });
 
 // Track original values
@@ -178,35 +179,39 @@ const submit = () => {
         formData.append('address', form.address);
         changes.address = form.address;
     }
-
-    // Handle profile photo
+    if (isFieldDirty('socialMediaLinks')) {
+        formData.append('socialMediaLinks', JSON.stringify(socialMediaLinks.value));
+        changes.socialMediaLinks = socialMediaLinks.value;
+    }
+    if (isFieldDirty('musicLinks')) {
+        formData.append('musicLinks', JSON.stringify(musicLinks.value));
+        changes.musicLinks = musicLinks.value;
+    }
     if (form.profilePhoto) {
         formData.append('profilePhoto', form.profilePhoto);
         changes.profilePhoto = 'new file uploaded';
     }
-
-    // Handle social media links array
-    const socialMediaChanged = JSON.stringify(socialMediaLinks.value) !== JSON.stringify(originalValues.socialMediaLinks);
-    if (socialMediaChanged) {
-        socialMediaLinks.value.forEach((link, index) => {
-            formData.append(`socialMediaLinks[${index}][platform]`, link.platform);
-            formData.append(`socialMediaLinks[${index}][url]`, link.url);
+    if (form.coverPhoto) {
+        formData.append('coverPhoto', form.coverPhoto);
+        changes.coverPhoto = 'new file uploaded';
+        console.log('Attaching cover photo to form data:', {
+            name: form.coverPhoto.name,
+            size: form.coverPhoto.size,
+            type: form.coverPhoto.type
         });
-        changes.socialMediaLinks = socialMediaLinks.value;
-    }
-
-    // Handle music links array
-    const musicLinksChanged = JSON.stringify(musicLinks.value) !== JSON.stringify(originalValues.musicLinks);
-    if (musicLinksChanged) {
-        musicLinks.value.forEach((link, index) => {
-            formData.append(`musicLinks[${index}][platform]`, link.platform);
-            formData.append(`musicLinks[${index}][url]`, link.url);
-        });
-        changes.musicLinks = musicLinks.value;
     }
 
     // Log the changes being sent
     console.log('Submitting changes:', changes);
+    
+    // Debug form data contents
+    const formDataEntries = {};
+    for (let pair of formData.entries()) {
+        formDataEntries[pair[0]] = pair[1] instanceof File 
+            ? { name: pair[1].name, size: pair[1].size, type: pair[1].type }
+            : pair[1];
+    }
+    console.log('Form data contents:', formDataEntries);
 
     form.patch(route('artist.profile.update'), formData, {
         preserveScroll: true,
@@ -347,6 +352,34 @@ const submit = () => {
                                 />
                             </div>
                             <InputError :message="form.errors.profilePhoto" />
+                        </div>
+
+                        <!-- Cover Photo -->
+                        <div class="grid gap-2">
+                            <Label for="coverPhoto">Cover Photo</Label>
+                            <div class="flex flex-col gap-2">
+                                <div 
+                                    v-if="artist?.cover_photo" 
+                                    class="relative h-32 w-full rounded-lg overflow-hidden"
+                                >
+                                    <img 
+                                        :src="`/storage/${artist.cover_photo}`" 
+                                        :alt="form.name + ' cover'" 
+                                        class="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <Input
+                                    id="coverPhoto"
+                                    type="file"
+                                    accept="image/*"
+                                    @change="(e) => form.coverPhoto = e.target.files[0]"
+                                    class="flex-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                                />
+                                <p class="text-sm text-muted-foreground">
+                                    Recommended size: 1500 x 500 pixels (3:1 ratio)
+                                </p>
+                            </div>
+                            <InputError :message="form.errors.coverPhoto" />
                         </div>
 
                         <!-- Social Media Links -->

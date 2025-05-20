@@ -10,6 +10,13 @@ interface PageProps {
     auth: {
         user: any;
     };
+    popularArtists: Array<{
+        id: number;
+        name: string;
+        profilePhoto: string | null;
+        location: string;
+        bio: string;
+    }>;
     [key: string]: any;
 }
 
@@ -49,6 +56,16 @@ const ThemeIcon = computed(() => {
         default: return Laptop;
     }
 });
+
+defineProps<{
+    popularArtists: Array<{
+        id: number;
+        name: string;
+        profilePhoto: string | null;
+        location: string;
+        bio: string;
+    }>;
+}>();
 
 </script>
 
@@ -485,54 +502,28 @@ const ThemeIcon = computed(() => {
                     </div>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-                    <!-- Artist 1 -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-indigo-600 p-1 dark:border-indigo-500">
-                            <img src="/api/placeholder/200/200" alt="Artist" class="w-full h-full object-cover rounded-full">
+                    <Link 
+                        v-for="artist in popularArtists" 
+                        :key="artist.id" 
+                        :href="route('artist.show', artist.id)"
+                        class="flex flex-col items-center text-center group"
+                    >
+                        <div class="relative w-full pb-[100%] mb-4">
+                            <div class="absolute inset-0 rounded-full overflow-hidden border-2 border-indigo-600 p-1 dark:border-indigo-500 group-hover:border-indigo-700 dark:group-hover:border-indigo-400 transition-colors">
+                                <img 
+                                    :src="artist.profilePhoto || '/api/placeholder/200/200'" 
+                                    :alt="artist.name" 
+                                    class="w-full h-full object-cover"
+                                    @error="(e: Event) => {
+                                        const target = e.target as HTMLImageElement;
+                                        if (target) target.src = '/api/placeholder/200/200';
+                                    }"
+                                >
+                            </div>
                         </div>
-                        <h3 class="font-medium text-base mb-1 dark:text-gray-100">Taylor Swift</h3>
-                        <p class="text-gray-500 text-sm dark:text-gray-400">Pop</p>
-                    </div>
-                    <!-- Artist 2 -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-indigo-600 p-1 dark:border-indigo-500">
-                            <img src="/api/placeholder/200/200" alt="Artist" class="w-full h-full object-cover rounded-full">
-                        </div>
-                        <h3 class="font-medium text-base mb-1 dark:text-gray-100">Drake</h3>
-                        <p class="text-gray-500 text-sm dark:text-gray-400">Hip-Hop</p>
-                    </div>
-                    <!-- Artist 3 -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-indigo-600 p-1 dark:border-indigo-500">
-                            <img src="/api/placeholder/200/200" alt="Artist" class="w-full h-full object-cover rounded-full">
-                        </div>
-                        <h3 class="font-medium text-base mb-1 dark:text-gray-100">Bad Bunny</h3>
-                        <p class="text-gray-500 text-sm dark:text-gray-400">Latin</p>
-                    </div>
-                    <!-- Artist 4 -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-indigo-600 p-1 dark:border-indigo-500">
-                            <img src="/api/placeholder/200/200" alt="Artist" class="w-full h-full object-cover rounded-full">
-                        </div>
-                        <h3 class="font-medium text-base mb-1 dark:text-gray-100">Doja Cat</h3>
-                        <p class="text-gray-500 text-sm dark:text-gray-400">Pop/R&B</p>
-                    </div>
-                    <!-- Artist 5 -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-indigo-600 p-1 dark:border-indigo-500">
-                            <img src="/api/placeholder/200/200" alt="Artist" class="w-full h-full object-cover rounded-full">
-                        </div>
-                        <h3 class="font-medium text-base mb-1 dark:text-gray-100">Post Malone</h3>
-                        <p class="text-gray-500 text-sm dark:text-gray-400">Pop/Hip-Hop</p>
-                    </div>
-                    <!-- Artist 6 -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-indigo-600 p-1 dark:border-indigo-500">
-                            <img src="/api/placeholder/200/200" alt="Artist" class="w-full h-full object-cover rounded-full">
-                        </div>
-                        <h3 class="font-medium text-base mb-1 dark:text-gray-100">Olivia Rodrigo</h3>
-                        <p class="text-gray-500 text-sm dark:text-gray-400">Pop</p>
-                    </div>
+                        <h3 class="font-medium text-base mb-1 text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{{ artist.name }}</h3>
+                        <p class="text-gray-500 text-sm dark:text-gray-400">{{ artist.location }}</p>
+                    </Link>
                 </div>
             </div>
         </section>

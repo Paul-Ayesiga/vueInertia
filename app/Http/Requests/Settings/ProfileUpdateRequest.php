@@ -35,6 +35,7 @@ class ProfileUpdateRequest extends FormRequest
             'region' => ['sometimes', 'required', 'string', 'max:255'],
             'address' => ['sometimes', 'required', 'string', 'max:255'],
             'profilePhoto' => ['sometimes', 'nullable', 'image', 'max:2048'],
+            'coverPhoto' => ['sometimes', 'nullable', 'image', 'max:4096'],
             'socialMediaLinks' => ['sometimes', 'required', 'array', 'min:1'],
             'socialMediaLinks.*.platform' => ['required_with:socialMediaLinks', 'string', 'in:instagram,twitter,facebook,tiktok,youtube'],
             'socialMediaLinks.*.url' => ['required_with:socialMediaLinks', 'url'],

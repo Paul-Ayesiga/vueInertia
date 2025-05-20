@@ -23,10 +23,21 @@ class ProfileController extends Controller
         $user = $request->user();
         $user->load('artist'); // Eager load the artist relationship
 
+        $artist = $user->artist;
+        if ($artist) {
+            $artist = $artist->toArray();
+            if (isset($artist['profile_photo'])) {
+                $artist['profile_photo'] = asset('storage/' . $artist['profile_photo']);
+            }
+            if (isset($artist['cover_photo'])) {
+                $artist['cover_photo'] = asset('storage/' . $artist['cover_photo']);
+            }
+        }
+
         return Inertia::render('artist/settings/Profile', [
             'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
-            'artist' => $user->artist,
+            'artist' => $artist,
         ]);
     }
 
@@ -73,6 +84,31 @@ class ProfileController extends Controller
             Log::info('Profile photo uploaded:', ['path' => $path]);
         }
 
+        // Handle cover photo upload
+        if ($request->hasFile('coverPhoto')) {
+            Log::info('Cover photo file details:', [
+                'name' => $request->file('coverPhoto')->getClientOriginalName(),
+                'size' => $request->file('coverPhoto')->getSize(),
+                'mime' => $request->file('coverPhoto')->getMimeType()
+            ]);
+            
+            // Delete old cover photo if it exists
+            if ($artist && $artist->cover_photo) {
+                Storage::disk('public')->delete($artist->cover_photo);
+                Log::info('Deleted old cover photo:', ['path' => $artist->cover_photo]);
+            }
+            
+            $path = $request->file('coverPhoto')->store('cover-photos', 'public');
+            $validated['cover_photo'] = $path;
+            Log::info('Cover photo uploaded:', ['path' => $path]);
+        } else {
+            Log::info('No cover photo file found in request');
+            // Dump all files in the request for debugging
+            if ($request->allFiles()) {
+                Log::info('All files in request:', ['files' => array_keys($request->allFiles())]);
+            }
+        }
+
         // Convert arrays to JSON strings if they exist
         if (isset($validated['socialMediaLinks'])) {
             $validated['social_media_links'] = json_encode($validated['socialMediaLinks']);
@@ -96,6 +132,7 @@ class ProfileController extends Controller
             'social_media_links' => $validated['social_media_links'] ?? null,
             'music_links' => $validated['music_links'] ?? null,
             'profile_photo' => $validated['profile_photo'] ?? null,
+            'cover_photo' => $validated['cover_photo'] ?? null,
         ], fn($value) => !is_null($value));
 
         Log::info('Artist data to update:', $artistData);
